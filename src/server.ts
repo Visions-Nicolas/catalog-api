@@ -6,7 +6,6 @@ import { globalErrorHandler } from "./middleware/globalErrorHandler";
 import swaggerUI from "swagger-ui-express";
 import swaggerSpec from "../docs/swagger.json";
 import { CONFIG } from "./config/environment";
-import routes from "./libs/loaders/routes";
 import { setupRoutes } from "./routes";
 
 export const startServer = async (testPort?: number) => {
