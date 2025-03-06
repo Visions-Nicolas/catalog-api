@@ -2,11 +2,17 @@ import { Router } from "express";
 import { body } from "express-validator";
 import { verifyJwtMiddleware } from "../../../middleware/auth";
 import {
+  acceptEcosystemNegotiation,
   acceptNegotiation,
   authorizeExchangeConfiguration,
+  createEcosystemNegotiation,
   createServiceOfferingAccessRequest,
+  getEcosystemNegotiationById,
+  getEcosystemNegotiationForParticipant,
   getExchangeConfigurationById,
+  getMyEcosystemNegotiations,
   getMyExchangeConfigurations,
+  negotiateEcosystemNegotiationPolicies,
   negotiateExchangeConfigurationPolicy,
   signExchangeConfiguration,
 } from "../../../controllers/private/v1/negotiation.private.controller";
@@ -50,6 +56,44 @@ router.put(
   [body("signature").isString().notEmpty().trim()],
   validate,
   signExchangeConfiguration
+);
+
+router.post(
+  "/ecosystem",
+  [
+    body("ecosystem").isString().notEmpty().trim(),
+    body("participant").isString().notEmpty().trim(),
+    body("policies").isArray(),
+    body("pricings").isArray(),
+    body("roles").isArray(),
+  ],
+  validate,
+  createEcosystemNegotiation
+);
+
+router.get("/ecosystem/me", getMyEcosystemNegotiations);
+router.get("/ecosystem/:id", getEcosystemNegotiationById);
+router.get(
+  "/ecosystem/:participantId/:ecosystemId",
+  getEcosystemNegotiationForParticipant
+);
+
+router.put(
+  "/ecosystem/:ecosystemId",
+  [
+    body("policies").isArray(),
+    body("pricings").isArray(),
+    body("participant").isString().notEmpty().trim(),
+  ],
+  validate,
+  negotiateEcosystemNegotiationPolicies
+);
+
+router.put(
+  "/ecosystem/:ecosystemId/accept",
+  [body("participant").isString().notEmpty().trim()],
+  validate,
+  acceptEcosystemNegotiation
 );
 
 export default router;

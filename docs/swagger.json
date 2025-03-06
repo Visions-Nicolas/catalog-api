@@ -1200,6 +1200,289 @@
         }
       }
     },
+    "/negotiation/ecosystem": {
+      "post": {
+        "tags": [
+          "Negotiation"
+        ],
+        "summary": "Creates a new ecosystem negotiation",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ecosystem": {
+                    "type": "string",
+                    "description": "ID of the ecosystem"
+                  },
+                  "participant": {
+                    "type": "string",
+                    "description": "ID of the participant"
+                  },
+                  "policies": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    },
+                    "description": "Array of policies for the negotiation"
+                  },
+                  "pricings": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    },
+                    "description": "Array of pricing configurations"
+                  },
+                  "roles": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Array of roles for the negotiation"
+                  }
+                },
+                "required": [
+                  "ecosystem",
+                  "participant",
+                  "policies",
+                  "pricings",
+                  "roles"
+                ]
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Ecosystem negotiation created successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/EcosystemNegotiation"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid input data"
+            }
+          }
+        }
+      }
+    },
+    "/negotiation/ecosystem/me": {
+      "get": {
+        "tags": [
+          "Negotiation"
+        ],
+        "summary": "Retrieves the user's ecosystem negotiations",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with the user's ecosystem negotiations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EcosystemNegotiation"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/negotiation/ecosystem/{id}": {
+      "get": {
+        "tags": [
+          "Negotiation"
+        ],
+        "summary": "Retrieves an ecosystem negotiation by ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the ecosystem negotiation"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with the ecosystem negotiation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EcosystemNegotiation"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ecosystem negotiation not found"
+          }
+        }
+      }
+    },
+    "/negotiation/ecosystem/{ecosystemId}": {
+      "put": {
+        "tags": [
+          "Negotiation"
+        ],
+        "summary": "Updates an ecosystem negotiation",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ecosystemId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the ecosystem negotiation to update"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "policies": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    },
+                    "description": "Updated array of policies"
+                  },
+                  "pricings": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    },
+                    "description": "Updated array of pricing configurations"
+                  },
+                  "participant": {
+                    "type": "string",
+                    "description": "ID of the participant"
+                  }
+                },
+                "required": [
+                  "policies",
+                  "pricings",
+                  "participant"
+                ]
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Ecosystem negotiation updated successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/EcosystemNegotiation"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid input data"
+            }
+          }
+        }
+      }
+    },
+    "/negotiation/ecosystem/{ecosystemId}/accept": {
+      "put": {
+        "tags": [
+          "Negotiation"
+        ],
+        "summary": "Accepts an ecosystem negotiation",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ecosystemId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the ecosystem negotiation to accept"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "participant": {
+                    "type": "string",
+                    "description": "ID of the participant accepting the negotiation"
+                  }
+                },
+                "required": [
+                  "participant"
+                ]
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Ecosystem negotiation accepted successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "message": {
+                        "type": "string"
+                      },
+                      "negotiation": {
+                        "$ref": "#/components/schemas/EcosystemNegotiation"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Ecosystem negotiation not found"
+            }
+          }
+        }
+      }
+    },
     "/ecosystems": {
       "get": {
         "summary": "Retrieves ecosystems with pagination",

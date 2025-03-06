@@ -1,6 +1,6 @@
 {
   "name": "catalog-api",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Prometheus-X Catalog API for managing catalog resources and data ecosystems",
   "main": "dist/index.js",
   "scripts": {

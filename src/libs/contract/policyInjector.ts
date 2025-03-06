@@ -49,6 +49,32 @@ export type BilateralPolicyBatchInjectionOptions = {
   }[];
 };
 
+/**
+ * Transition from OfferingPolicyConfiguration to the requirements
+ * for the contract service
+ */
+export type EcosystemServiceOfferingInjection = {
+  /**
+   * The id of the participant
+   */
+  participant: string;
+  /**
+   * The id of the service offering
+   */
+  serviceOffering: string;
+  policies: {
+    /**
+     * The rule uid from the registry
+     */
+    ruleId: string;
+    /**
+     * The values that should be injected in the policy
+     * for the "requestedFields"
+     */
+    values: { [key: string]: string | number | Date };
+  }[];
+};
+
 export const batchInjectRoleAndObligations = async (
   options: BatchRoleAndObligationInjection
 ) => {
@@ -93,5 +119,36 @@ export const batchInjectPoliciesInBilateralContract = async (
     data: options.rules,
   });
 
+  return res.data;
+};
+
+export const batchInjectPoliciesServiceOfferingEcosystemContract = async (
+  contractId: string,
+  options: EcosystemServiceOfferingInjection
+) => {
+  const res = await axios({
+    url:
+      process.env.CONTRACT_SERVICE_ENDPOINT +
+      "/contracts/policies/offering/" +
+      contractId,
+    method: "PUT",
+    headers: getContractServiceHeaders(),
+    data: options,
+  });
+  return res.data;
+};
+
+export const deletePoliciesServiceOfferingEcosystemContract = async (
+  contractId: string,
+  offeringId: string,
+  participantId: string
+) => {
+  const res = await axios({
+    url:
+      process.env.CONTRACT_SERVICE_ENDPOINT +
+      `/contracts/policies/offering/${contractId}/${offeringId}/${participantId}`,
+    method: "DELETE",
+    headers: getContractServiceHeaders(),
+  });
   return res.data;
 };
